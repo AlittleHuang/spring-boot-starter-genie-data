@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.github.genie-cloud</groupId>
+  <artifactId>spring-boot-starter-genie-data</artifactId>
+  <version>3.2.1</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>spring-sql-genie-data-common</module>
+    <module>spring-boot-starter-genie-data-jdbc</module>
+    <module>spring-boot-starter-genie-data-jpa</module>
+  </modules>
+  <properties>
+    <spring.boot.version>3.2.0</spring.boot.version>
+    <java.version>17</java.version>
+    <sql.genie.version>0.0.2</sql.genie.version>
+    <lombok.version>1.18.28</lombok.version>
+  </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring.boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.github.genie-cloud</groupId>
+        <artifactId>sql-genie-api</artifactId>
+        <version>${sql.genie.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.genie-cloud</groupId>
+        <artifactId>sql-genie-builder</artifactId>
+        <version>${sql.genie.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.genie-cloud</groupId>
+        <artifactId>sql-genie-jpa-metamodel</artifactId>
+        <version>${sql.genie.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.genie-cloud</groupId>
+        <artifactId>sql-genie-jdbc</artifactId>
+        <version>${sql.genie.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.genie-cloud</groupId>
+        <artifactId>sql-genie-jpa</artifactId>
+        <version>${sql.genie.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+</project>
