@@ -17,7 +17,7 @@
     <spring.boot.version>3.2.0</spring.boot.version>
     <java.version>17</java.version>
     <sql.genie.version>0.0.2</sql.genie.version>
-    <lombok.version>1.18.28</lombok.version>
+    <lombok.version>1.18.30</lombok.version>
   </properties>
   <dependencyManagement>
     <dependencies>
