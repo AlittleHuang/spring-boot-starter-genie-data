@@ -13,13 +13,10 @@ import io.github.genie.sql.api.Path.BooleanPath;
 import io.github.genie.sql.api.Path.ComparablePath;
 import io.github.genie.sql.api.Path.NumberPath;
 import io.github.genie.sql.api.Path.StringPath;
-import io.github.genie.sql.api.Query.AggWhere0;
 import io.github.genie.sql.api.Query.AndBuilder;
 import io.github.genie.sql.api.Query.Collector;
-import io.github.genie.sql.api.Query.GroupBy0;
-import io.github.genie.sql.api.Query.Having0;
-import io.github.genie.sql.api.Query.OrderBy0;
-import io.github.genie.sql.api.Query.Select0;
+import io.github.genie.sql.api.Query.Select;
+import io.github.genie.sql.api.Query.Where;
 import io.github.genie.sql.api.Query.Where0;
 import io.github.genie.sql.api.Slice;
 import io.github.genie.sql.api.Sliceable;
@@ -29,118 +26,82 @@ import java.util.List;
 import java.util.Optional;
 
 interface Reader<T> {
-    Select0<T, T> query();
+    Select<T> query();
 
-    default GroupBy0<T, T> fetch(List<PathOperator<T, ?, Predicate<T>>> expressions) {
+    default Where<T, T> fetch(List<PathOperator<T, ?, Predicate<T>>> expressions) {
         return query().fetch(expressions);
     }
 
-    default GroupBy0<T, T> fetch(Collection<Path<T, ?>> paths) {
+    default Where<T, T> fetch(Collection<Path<T, ?>> paths) {
         return query().fetch(paths);
     }
 
-    default GroupBy0<T, T> fetch(Path<T, ?> path) {
+    default Where<T, T> fetch(Path<T, ?> path) {
         return query().fetch(path);
     }
 
-    default GroupBy0<T, T> fetch(Path<T, ?> p0, Path<T, ?> p1) {
+    default Where<T, T> fetch(Path<T, ?> p0, Path<T, ?> p1) {
         return query().fetch(p0, p1);
     }
 
-    default GroupBy0<T, T> fetch(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p3) {
+    default Where<T, T> fetch(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p3) {
         return query().fetch(p0, p1, p3);
     }
 
-    default <R> Where0<T, R> select(Class<R> projectionType) {
+    default <R> Where<T, R> select(Class<R> projectionType) {
         return query().select(projectionType);
     }
 
-    default AggWhere0<T, Object[]> select(List<? extends ExpressionHolder<T, ?>> paths) {
+    default Where0<T, Object[]> select(List<? extends ExpressionHolder<T, ?>> paths) {
         return query().select(paths);
     }
 
-    default <R> AggWhere0<T, R> select(ExpressionHolder<T, R> expression) {
+    default <R> Where0<T, R> select(ExpressionHolder<T, R> expression) {
         return query().select(expression);
     }
 
-    default <R> AggWhere0<T, R> select(Path<T, ? extends R> expression) {
+    default <R> Where0<T, R> select(Path<T, ? extends R> expression) {
         return query().select(expression);
     }
 
-    default AggWhere0<T, Object[]> select(Collection<Path<T, ?>> paths) {
+    default Where0<T, Object[]> select(Collection<Path<T, ?>> paths) {
         return query().select(paths);
     }
 
-    default AggWhere0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1) {
+    default Where0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1) {
         return query().select(p0, p1);
     }
 
-    default AggWhere0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2) {
+    default Where0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2) {
         return query().select(p0, p1, p2);
     }
 
-    default AggWhere0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3) {
+    default Where0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3) {
         return query().select(p0, p1, p2, p3);
     }
 
-    default AggWhere0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4) {
+    default Where0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4) {
         return query().select(p0, p1, p2, p3, p4);
     }
 
-    default AggWhere0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4, Path<T, ?> p5) {
+    default Where0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4, Path<T, ?> p5) {
         return query().select(p0, p1, p2, p3, p4, p5);
     }
 
-    default AggWhere0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4, Path<T, ?> p5, Path<T, ?> p6) {
+    default Where0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4, Path<T, ?> p5, Path<T, ?> p6) {
         return query().select(p0, p1, p2, p3, p4, p5, p6);
     }
 
-    default AggWhere0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4, Path<T, ?> p5, Path<T, ?> p6, Path<T, ?> p7) {
+    default Where0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4, Path<T, ?> p5, Path<T, ?> p6, Path<T, ?> p7) {
         return query().select(p0, p1, p2, p3, p4, p5, p6, p7);
     }
 
-    default AggWhere0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4, Path<T, ?> p5, Path<T, ?> p6, Path<T, ?> p7, Path<T, ?> p8) {
+    default Where0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4, Path<T, ?> p5, Path<T, ?> p6, Path<T, ?> p7, Path<T, ?> p8) {
         return query().select(p0, p1, p2, p3, p4, p5, p6, p7, p8);
     }
 
-    default AggWhere0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4, Path<T, ?> p5, Path<T, ?> p6, Path<T, ?> p7, Path<T, ?> p8, Path<T, ?> p9) {
+    default Where0<T, Object[]> select(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4, Path<T, ?> p5, Path<T, ?> p6, Path<T, ?> p7, Path<T, ?> p8, Path<T, ?> p9) {
         return query().select(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9);
-    }
-
-    default Having0<T, T> groupBy(List<? extends ExpressionHolder<T, ?>> expressions) {
-        return query().groupBy(expressions);
-    }
-
-    default Having0<T, T> groupBy(Path<T, ?> path) {
-        return query().groupBy(path);
-    }
-
-    default Having0<T, T> groupBy(Collection<Path<T, ?>> paths) {
-        return query().groupBy(paths);
-    }
-
-    default Having0<T, T> groupBy(Path<T, ?> p0, Path<T, ?> p1) {
-        return query().groupBy(p0, p1);
-    }
-
-    default Having0<T, T> groupBy(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2) {
-        return query().groupBy(p0, p1, p2);
-    }
-
-    default Having0<T, T> groupBy(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3) {
-        return query().groupBy(p0, p1, p2, p3);
-    }
-
-    default Having0<T, T> groupBy(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4) {
-        return query().groupBy(p0, p1, p2, p3, p4);
-    }
-
-    default Having0<T, T> groupBy(Path<T, ?> p0, Path<T, ?> p1, Path<T, ?> p2, Path<T, ?> p3, Path<T, ?> p4, Path<T, ?> p5) {
-        return query().groupBy(p0, p1, p2, p3, p4, p5);
-    }
-
-    default OrderBy0<T, T> where(ExpressionHolder<T, Boolean> predicate) {
-        return query().where(predicate);
     }
 
     default <N> PathOperator<T, N, ? extends AndBuilder<T, T>> where(Path<T, N> path) {

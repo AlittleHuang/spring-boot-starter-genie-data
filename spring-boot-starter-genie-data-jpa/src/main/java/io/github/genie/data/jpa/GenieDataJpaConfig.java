@@ -2,21 +2,19 @@ package io.github.genie.data.jpa;
 
 import io.github.genie.data.repository.AbstractGenieDataConfig;
 import io.github.genie.data.repository.DataAccess;
-import io.github.genie.data.repository.DataAccessImpl;
 import io.github.genie.data.repository.GenieDataBeans;
 import io.github.genie.data.repository.Persistable;
 import io.github.genie.data.repository.Repository;
-import io.github.genie.data.repository.RepositoryImpl;
 import io.github.genie.sql.api.Query;
 import io.github.genie.sql.api.Update;
 import io.github.genie.sql.builder.AbstractQueryExecutor;
 import io.github.genie.sql.builder.QueryStructurePostProcessor;
 import io.github.genie.sql.builder.meta.Metamodel;
-import io.github.genie.sql.core.mapping.JpaMetamodel;
 import io.github.genie.sql.executor.jdbc.JdbcQueryExecutor.QuerySqlBuilder;
 import io.github.genie.sql.executor.jdbc.MySqlQuerySqlBuilder;
 import io.github.genie.sql.executor.jpa.JpaQueryExecutor;
 import io.github.genie.sql.executor.jpa.JpaUpdate;
+import io.github.genie.sql.meta.JpaMetamodel;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -62,5 +60,25 @@ public class GenieDataJpaConfig extends AbstractGenieDataConfig {
     @ConditionalOnMissingBean
     protected Update genieUpdate(EntityManager entityManager, JpaQueryExecutor jpaQueryExecutor) {
         return new JpaUpdate(entityManager, jpaQueryExecutor);
+    }
+
+    @Override
+    @Bean
+    protected GenieDataBeans genieDataBeans(Query query, Update update) {
+        return super.genieDataBeans(query, update);
+    }
+
+    @Override
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    protected <T> DataAccess<T> genieDataAccess(GenieDataBeans genieDataBeans, DependencyDescriptor descriptor) {
+        return super.genieDataAccess(genieDataBeans, descriptor);
+    }
+
+    @Override
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    protected <T extends Persistable<ID>, ID extends Serializable> Repository<T, ID> genieDataRepository(GenieDataBeans genieDataBeans, DependencyDescriptor descriptor) {
+        return super.genieDataRepository(genieDataBeans, descriptor);
     }
 }
