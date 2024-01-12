@@ -47,11 +47,11 @@ public class AbstractDataAccess<T> implements Reader<T>, Writer<T> {
 
     @Override
     public void delete(Iterable<T> entities) {
-        List<T> list = entities instanceof List<T> l
-                ? l
+        List<T> delete = entities instanceof List<?>
+                ? (List<T>) entities
                 : StreamSupport
                 .stream(entities.spliterator(), false)
                 .collect(Collectors.toList());
-        genieDataBeans.update().delete(list, entityType);
+        genieDataBeans.update().delete(delete, entityType);
     }
 }
