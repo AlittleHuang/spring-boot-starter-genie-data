@@ -7,10 +7,10 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(fluent = true)
-public class GenieDataBeans {
+public class DataAccessorImpl implements DataAccessor {
 
-    private final Query query;
+    private final Query reader;
 
-    private final Update update;
+    private final Update writer;
 
 }

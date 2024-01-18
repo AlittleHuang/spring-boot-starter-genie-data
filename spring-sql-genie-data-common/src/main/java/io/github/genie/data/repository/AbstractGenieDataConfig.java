@@ -12,21 +12,21 @@ import java.io.Serializable;
 public abstract class AbstractGenieDataConfig {
 
     @Bean
-    protected GenieDataBeans genieDataBeans(Query query, Update update) {
-        return new GenieDataBeans(query, update);
+    protected DataAccessor genieDataBeans(Query query, Update update) {
+        return new DataAccessorImpl(query, update);
     }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    protected <T> DataAccess<T> genieDataAccess(GenieDataBeans genieDataBeans,
+    protected <T> DataAccess<T> genieDataAccess(DataAccessor accessor,
                                                 DependencyDescriptor descriptor) {
-        return new DataAccessImpl<>(genieDataBeans, descriptor);
+        return new DataAccessImpl<>(accessor, descriptor);
     }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     protected <T extends Persistable<ID>, ID extends Serializable> Repository<T, ID>
-    genieDataRepository(GenieDataBeans genieDataBeans,
+    genieDataRepository(DataAccessor genieDataBeans,
                         DependencyDescriptor descriptor) {
         return new RepositoryImpl<>(genieDataBeans, descriptor);
     }

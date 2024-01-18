@@ -2,7 +2,7 @@ package io.github.genie.data.jpa;
 
 import io.github.genie.data.repository.AbstractGenieDataConfig;
 import io.github.genie.data.repository.DataAccess;
-import io.github.genie.data.repository.GenieDataBeans;
+import io.github.genie.data.repository.DataAccessor;
 import io.github.genie.data.repository.Persistable;
 import io.github.genie.data.repository.Repository;
 import io.github.genie.sql.api.Query;
@@ -43,14 +43,17 @@ public class GenieDataJpaConfig extends AbstractGenieDataConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    protected JpaQueryExecutor queryExecutor(EntityManager entityManager, Metamodel metamodel, QuerySqlBuilder querySqlBuilder) {
+    protected JpaQueryExecutor queryExecutor(EntityManager entityManager,
+                                             Metamodel metamodel,
+                                             QuerySqlBuilder querySqlBuilder) {
         return new JpaQueryExecutor(entityManager, metamodel, querySqlBuilder);
     }
 
     @Bean
     @ConditionalOnMissingBean
     protected Query genieQuery(AbstractQueryExecutor executor,
-                               @Autowired(required = false) QueryStructurePostProcessor structurePostProcessor) {
+                               @Autowired(required = false)
+                               QueryStructurePostProcessor structurePostProcessor) {
         return structurePostProcessor != null
                 ? executor.createQuery(structurePostProcessor)
                 : executor.createQuery();
@@ -64,21 +67,21 @@ public class GenieDataJpaConfig extends AbstractGenieDataConfig {
 
     @Override
     @Bean
-    protected GenieDataBeans genieDataBeans(Query query, Update update) {
+    protected DataAccessor genieDataBeans(Query query, Update update) {
         return super.genieDataBeans(query, update);
     }
 
     @Override
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    protected <T> DataAccess<T> genieDataAccess(GenieDataBeans genieDataBeans, DependencyDescriptor descriptor) {
-        return super.genieDataAccess(genieDataBeans, descriptor);
+    protected <T> DataAccess<T> genieDataAccess(DataAccessor accessor, DependencyDescriptor descriptor) {
+        return super.genieDataAccess(accessor, descriptor);
     }
 
     @Override
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    protected <T extends Persistable<ID>, ID extends Serializable> Repository<T, ID> genieDataRepository(GenieDataBeans genieDataBeans, DependencyDescriptor descriptor) {
+    protected <T extends Persistable<ID>, ID extends Serializable> Repository<T, ID> genieDataRepository(DataAccessor genieDataBeans, DependencyDescriptor descriptor) {
         return super.genieDataRepository(genieDataBeans, descriptor);
     }
 }

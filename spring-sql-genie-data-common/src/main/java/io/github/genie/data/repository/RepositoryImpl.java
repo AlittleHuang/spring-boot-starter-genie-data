@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class RepositoryImpl<T extends Persistable<ID>, ID extends Serializable>
         extends AbstractDataAccess<T>
         implements Repository<T, ID> {
-    public RepositoryImpl(GenieDataBeans genieDataBeans, DependencyDescriptor descriptor) {
+    public RepositoryImpl(DataAccessor genieDataBeans, DependencyDescriptor descriptor) {
         super(genieDataBeans, descriptor);
     }
 }
