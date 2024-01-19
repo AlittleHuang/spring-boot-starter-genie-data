@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Scope;
 import java.io.Serializable;
 
 @Configuration
-public class AbstractGenieDataConfig {
+public class BaseDataAccessObjectsConfiguration {
 
     @Bean
     protected DataAccessor genieDataBeans(Query query, Update update) {

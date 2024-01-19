@@ -1,6 +1,6 @@
 package io.github.genie.data.jdbc;
 
-import io.github.genie.data.repository.AbstractGenieDataConfig;
+import io.github.genie.data.repository.BaseDataAccessObjectsConfiguration;
 import io.github.genie.sql.api.Query;
 import io.github.genie.sql.api.Update;
 import io.github.genie.sql.builder.AbstractQueryExecutor;
@@ -20,18 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
-
 @Configuration
-public class GenieDataJdbcConfig extends AbstractGenieDataConfig {
-
-    @Bean
-    @ConditionalOnMissingBean
-    JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
-    }
+@Import(BaseDataAccessObjectsConfiguration.class)
+public class JdbcDataAccessObjectsConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
