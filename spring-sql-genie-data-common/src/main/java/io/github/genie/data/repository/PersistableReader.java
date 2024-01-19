@@ -17,12 +17,16 @@ interface PersistableReader<T extends Persistable<ID>, ID extends Serializable> 
     }
 
     default List<T> getAll(Collection<? extends ID> ids) {
-        return where((Path<T, ID>) Persistable::getId).in(ids).getList();
+        return where(T::getId).in(ids).getList();
+    }
+
+    default Map<ID, T> getMap(Collection<? extends ID> ids) {
+        return toMap(getAll(ids));
     }
 
     default Map<ID, T> toMap(Iterable<T> entities) {
         return StreamSupport.stream(entities.spliterator(), false)
-                .collect(Collectors.toMap(Persistable::getId, Function.identity()));
+                .collect(Collectors.toMap(T::getId, Function.identity()));
     }
 
 }

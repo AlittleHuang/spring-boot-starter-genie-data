@@ -10,13 +10,13 @@ import java.util.stream.StreamSupport;
 
 public class AbstractDataAccess<T> implements Reader<T>, Writer<T> {
 
-    private final Select<T> select;
-    private final Class<T> entityType;
-    private final GenieDataBeans genieDataBeans;
+    protected final Select<T> select;
+    protected final Class<T> entityType;
+    protected final DataAccessor dataAccessor;
 
-    public AbstractDataAccess(GenieDataBeans genieDataBeans, DependencyDescriptor descriptor) {
+    public AbstractDataAccess(DataAccessor dataAccessor, DependencyDescriptor descriptor) {
         Objects.requireNonNull(descriptor);
-        this.genieDataBeans = genieDataBeans;
+        this.dataAccessor = dataAccessor;
         Class<?> entityType = descriptor.getResolvableType()
                 .as(Reader.class)
                 .resolveGeneric(0);
@@ -27,7 +27,7 @@ public class AbstractDataAccess<T> implements Reader<T>, Writer<T> {
         }
         Objects.requireNonNull(descriptor);
         this.entityType = TypeCastUtil.cast(entityType);
-        select = genieDataBeans.query().from(this.entityType);
+        select = dataAccessor.reader().from(this.entityType);
     }
 
     @Override
@@ -37,12 +37,12 @@ public class AbstractDataAccess<T> implements Reader<T>, Writer<T> {
 
     @Override
     public List<T> insert(List<T> entities) {
-        return genieDataBeans.update().insert(entities, entityType);
+        return dataAccessor.writer().insert(entities, entityType);
     }
 
     @Override
     public List<T> update(List<T> entities) {
-        return genieDataBeans.update().update(entities, entityType);
+        return dataAccessor.writer().update(entities, entityType);
     }
 
     @Override
@@ -52,6 +52,6 @@ public class AbstractDataAccess<T> implements Reader<T>, Writer<T> {
                 : StreamSupport
                 .stream(entities.spliterator(), false)
                 .collect(Collectors.toList());
-        genieDataBeans.update().delete(list, entityType);
+        dataAccessor.writer().delete(list, entityType);
     }
 }

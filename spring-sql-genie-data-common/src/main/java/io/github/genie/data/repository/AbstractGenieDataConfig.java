@@ -2,33 +2,37 @@ package io.github.genie.data.repository;
 
 import io.github.genie.sql.api.Query;
 import io.github.genie.sql.api.Update;
+import io.github.genie.sql.builder.meta.Metamodel;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import java.io.Serializable;
 
-public abstract class AbstractGenieDataConfig {
+@Configuration
+public class AbstractGenieDataConfig {
 
     @Bean
-    protected GenieDataBeans genieDataBeans(Query query, Update update) {
-        return new GenieDataBeans(query, update);
+    protected DataAccessor genieDataBeans(Query query, Update update) {
+        return new DataAccessorImpl(query, update);
     }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    protected <T> DataAccess<T> genieDataAccess(GenieDataBeans genieDataBeans,
-                                                DependencyDescriptor descriptor) {
-        return new DataAccessImpl<>(genieDataBeans, descriptor);
+    protected <T> DataAccess<T> genieDataAccess(DataAccessor dataAccessor,
+                                                DependencyDescriptor descriptor,
+                                                Metamodel metamodel) {
+        return new DataAccessImpl<>(dataAccessor, descriptor, metamodel);
     }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     protected <T extends Persistable<ID>, ID extends Serializable> Repository<T, ID>
-    genieDataRepository(GenieDataBeans genieDataBeans,
+    genieDataRepository(DataAccessor dataAccessor,
                         DependencyDescriptor descriptor) {
-        return new RepositoryImpl<>(genieDataBeans, descriptor);
+        return new RepositoryImpl<>(dataAccessor, descriptor);
     }
 
 }
