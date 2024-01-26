@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class AbstractDataAccess<T> implements Reader<T>, Writer<T> {
+class AbstractDataAccess<T> implements Reader<T>, Writer<T> {
 
     protected final Select<T> select;
     protected final Class<T> entityType;
