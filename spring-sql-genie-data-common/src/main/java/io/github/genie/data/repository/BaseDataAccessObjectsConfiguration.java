@@ -11,8 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
-import java.io.Serializable;
-
 @Configuration
 public class BaseDataAccessObjectsConfiguration {
 
@@ -23,16 +21,8 @@ public class BaseDataAccessObjectsConfiguration {
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    protected <T> DataAccess<T> genieDataAccess(DataAccessor dataAccessor,
-                                                DependencyDescriptor descriptor) {
-        return new DataAccessImpl<>(dataAccessor, descriptor);
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    protected <T extends Persistable<ID>, ID extends Serializable> Repository<T, ID>
-    genieDataRepository(DataAccessor dataAccessor,
-                        DependencyDescriptor descriptor) {
+    protected <T> Repository<T> genieDataRepository(DataAccessor dataAccessor,
+                                                    DependencyDescriptor descriptor) {
         return new RepositoryImpl<>(dataAccessor, descriptor);
     }
 
