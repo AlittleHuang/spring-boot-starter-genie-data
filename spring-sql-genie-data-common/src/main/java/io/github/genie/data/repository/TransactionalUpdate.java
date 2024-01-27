@@ -1,11 +1,13 @@
 package io.github.genie.data.repository;
 
 import io.github.genie.sql.api.Update;
+import io.github.genie.sql.api.Updater;
+import io.github.genie.sql.builder.UpdaterImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public class TransactionalUpdate implements Update {
+class TransactionalUpdate implements Update {
 
     private final Update target;
 
@@ -39,7 +41,7 @@ public class TransactionalUpdate implements Update {
 
     @Override
     @Transactional
-    public <T> void delete(List<T> entities, Class<T> entityType) {
+    public <T> void delete(Iterable<T> entities, Class<T> entityType) {
         target.delete(entities, entityType);
     }
 
@@ -55,5 +57,9 @@ public class TransactionalUpdate implements Update {
         return target.updateNonNullColumn(entity, entityType);
     }
 
+    @Override
+    public <T> Updater<T> getUpdater(Class<T> type) {
+        return new UpdaterImpl<>(this, type);
+    }
 
 }

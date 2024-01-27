@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.github.genie.data.jdbc.JdbcDataAccessObjectsConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.github.genie.data.jdbc.JdbcRepositoryConfiguration

@@ -1,6 +1,6 @@
 package io.github.genie.data.jpa;
 
-import io.github.genie.data.repository.BaseDataAccessObjectsConfiguration;
+import io.github.genie.data.repository.BaseRepositoryConfiguration;
 import io.github.genie.sql.api.Query;
 import io.github.genie.sql.api.Update;
 import io.github.genie.sql.builder.AbstractQueryExecutor;
@@ -21,8 +21,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.orm.jpa.SharedEntityManagerCreator;
 
 @Configuration
-@Import(BaseDataAccessObjectsConfiguration.class)
-public class JpaDataAccessObjectsConfiguration {
+@Import(BaseRepositoryConfiguration.class)
+public class JpaRepositoryConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
