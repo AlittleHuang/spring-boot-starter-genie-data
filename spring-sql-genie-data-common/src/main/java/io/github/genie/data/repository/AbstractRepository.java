@@ -1,7 +1,6 @@
 package io.github.genie.data.repository;
 
 import io.github.genie.sql.api.Column;
-import io.github.genie.sql.api.EntityRoot;
 import io.github.genie.sql.api.Expression;
 import io.github.genie.sql.api.ExpressionHolder;
 import io.github.genie.sql.api.ExpressionHolder.ColumnHolder;
@@ -13,19 +12,17 @@ import io.github.genie.sql.api.LockModeType;
 import io.github.genie.sql.api.Operator;
 import io.github.genie.sql.api.Order;
 import io.github.genie.sql.api.Path;
-import io.github.genie.sql.api.Path.BooleanPath;
 import io.github.genie.sql.api.Path.ComparablePath;
 import io.github.genie.sql.api.Path.NumberPath;
 import io.github.genie.sql.api.Path.StringPath;
 import io.github.genie.sql.api.Query;
-import io.github.genie.sql.api.Query.AndBuilder;
 import io.github.genie.sql.api.Query.Collector;
-import io.github.genie.sql.api.Query.OrderBy;
 import io.github.genie.sql.api.Query.OrderOperator;
 import io.github.genie.sql.api.Query.QueryStructureBuilder;
 import io.github.genie.sql.api.Query.Select;
 import io.github.genie.sql.api.Query.Where;
 import io.github.genie.sql.api.Query.Where0;
+import io.github.genie.sql.api.Root;
 import io.github.genie.sql.api.Slice;
 import io.github.genie.sql.api.Sliceable;
 import io.github.genie.sql.api.Update;
@@ -139,7 +136,7 @@ public abstract class AbstractRepository<T, ID> implements Entities<T, ID> {
     }
 
     @Override
-    public Where0<T, Object[]> select(Function<EntityRoot<T>, List<? extends ExpressionHolder<T, ?>>> selectBuilder) {
+    public Where0<T, Object[]> select(Function<Root<T>, List<? extends ExpressionHolder<T, ?>>> selectBuilder) {
         return select.select(selectBuilder);
     }
 
@@ -164,7 +161,7 @@ public abstract class AbstractRepository<T, ID> implements Entities<T, ID> {
     }
 
     @Override
-    public Where0<T, Object[]> selectDistinct(Function<EntityRoot<T>, List<? extends ExpressionHolder<T, ?>>> selectBuilder) {
+    public Where0<T, Object[]> selectDistinct(Function<Root<T>, List<? extends ExpressionHolder<T, ?>>> selectBuilder) {
         return select.selectDistinct(selectBuilder);
     }
 
@@ -188,32 +185,28 @@ public abstract class AbstractRepository<T, ID> implements Entities<T, ID> {
         return select.fetch(paths);
     }
 
-    public OrderBy<T, T> where(ExpressionHolder<T, Boolean> predicate) {
+    public Where<T, T> where(ExpressionHolder<T, Boolean> predicate) {
         return select.where(predicate);
     }
 
     @Override
-    public OrderBy<T, T> where(Function<EntityRoot<T>, ExpressionHolder<T, Boolean>> predicateBuilder) {
+    public Where<T, T> where(Function<Root<T>, ExpressionHolder<T, Boolean>> predicateBuilder) {
         return select.where(predicateBuilder);
     }
 
-    public <N> PathOperator<T, N, ? extends AndBuilder<T, T>> where(Path<T, N> path) {
+    public <N> PathOperator<T, N, ? extends Where<T, T>> where(Path<T, N> path) {
         return select.where(path);
     }
 
-    public <N extends Number & Comparable<N>> NumberOperator<T, N, ? extends AndBuilder<T, T>> where(NumberPath<T, N> path) {
+    public <N extends Number & Comparable<N>> NumberOperator<T, N, ? extends Where<T, T>> where(NumberPath<T, N> path) {
         return select.where(path);
     }
 
-    public <N extends Comparable<N>> ComparableOperator<T, N, ? extends AndBuilder<T, T>> where(ComparablePath<T, N> path) {
+    public <N extends Comparable<N>> ComparableOperator<T, N, ? extends Where<T, T>> where(ComparablePath<T, N> path) {
         return select.where(path);
     }
 
-    public StringOperator<T, ? extends AndBuilder<T, T>> where(StringPath<T> path) {
-        return select.where(path);
-    }
-
-    public AndBuilder<T, T> where(BooleanPath<T> path) {
+    public StringOperator<T, ? extends Where<T, T>> where(StringPath<T> path) {
         return select.where(path);
     }
 
@@ -222,7 +215,7 @@ public abstract class AbstractRepository<T, ID> implements Entities<T, ID> {
     }
 
     @Override
-    public Collector<T> orderBy(Function<EntityRoot<T>, List<? extends Order<T>>> ordersBuilder) {
+    public Collector<T> orderBy(Function<Root<T>, List<? extends Order<T>>> ordersBuilder) {
         return select.orderBy(ordersBuilder);
     }
 
@@ -254,4 +247,8 @@ public abstract class AbstractRepository<T, ID> implements Entities<T, ID> {
         return select.buildMetadata();
     }
 
+    @Override
+    public Root<T> root() {
+        return select.root();
+    }
 }

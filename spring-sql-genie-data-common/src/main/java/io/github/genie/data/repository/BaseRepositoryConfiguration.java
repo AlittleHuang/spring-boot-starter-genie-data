@@ -6,9 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 
 import java.io.Serializable;
@@ -17,15 +17,16 @@ import java.util.Objects;
 @Configuration
 public class BaseRepositoryConfiguration {
 
-    @Primary
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    @ConditionalOnMissingBean
     protected <T> Repository<T> genieDataRepository(@SuppressWarnings("ALL") DependencyDescriptor descriptor) {
         return new RepositoryImpl<>(getEntityType(descriptor));
     }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    @ConditionalOnMissingBean
     protected <T extends Identifiable<ID>, ID extends Serializable>
     Entities<T, ID> genieDataEntities(@SuppressWarnings("ALL") DependencyDescriptor descriptor) {
         Class<T> entityType = getEntityType(descriptor);
