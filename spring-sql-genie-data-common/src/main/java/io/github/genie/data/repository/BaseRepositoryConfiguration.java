@@ -2,6 +2,7 @@ package io.github.genie.data.repository;
 
 import io.github.genie.sql.api.Query.Select;
 import io.github.genie.sql.api.Update;
+import io.github.genie.sql.api.Updater;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -56,7 +57,7 @@ public class BaseRepositoryConfiguration {
                 .resolveGeneric(0);
         if (entityType == null) {
             entityType = descriptor.getResolvableType()
-                    .as(Update.class)
+                    .as(Updater.class)
                     .resolveGeneric(0);
         }
         Objects.requireNonNull(entityType);
