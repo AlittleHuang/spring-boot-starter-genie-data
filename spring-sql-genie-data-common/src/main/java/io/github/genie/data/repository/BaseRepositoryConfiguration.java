@@ -21,7 +21,7 @@ public class BaseRepositoryConfiguration {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     @ConditionalOnMissingBean
-    protected <T> Repository<T> genieDataRepository(@SuppressWarnings("ALL") DependencyDescriptor descriptor) {
+    protected <T> Repository<T> genieDataRepository(DependencyDescriptor descriptor) {
         return new RepositoryImpl<>(getEntityType(descriptor));
     }
 
@@ -29,7 +29,7 @@ public class BaseRepositoryConfiguration {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     @ConditionalOnMissingBean
     protected <T extends Identifiable<ID>, ID extends Serializable>
-    Entities<T, ID> genieDataEntities(@SuppressWarnings("ALL") DependencyDescriptor descriptor) {
+    Entities<T, ID> genieDataEntities(DependencyDescriptor descriptor) {
         Class<T> entityType = getEntityType(descriptor);
         return new AbstractRepository<>(entityType) {
         };
