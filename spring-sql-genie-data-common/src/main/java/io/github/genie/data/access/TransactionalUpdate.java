@@ -1,4 +1,4 @@
-package io.github.genie.data.repository;
+package io.github.genie.data.access;
 
 import io.github.genie.sql.api.Update;
 import io.github.genie.sql.api.Updater;

@@ -1,4 +1,4 @@
-package io.github.genie.data.repository;
+package io.github.genie.data.access;
 
 public class TypeCastUtil {
     public static <T> Class<T> cast(Class<?> resolve) {

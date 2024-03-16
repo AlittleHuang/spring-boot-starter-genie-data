@@ -1,4 +1,4 @@
-package io.github.genie.data.repository;
+package io.github.genie.data.access;
 
 import io.github.genie.sql.api.Column;
 import io.github.genie.sql.api.Expression;
@@ -51,7 +51,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public abstract class AbstractRepository<T, ID> implements Entities<T, ID> {
+class BaseAccessImpl<T, ID> implements BaseAccess<T> {
     protected Query query;
     protected Update update;
     protected Metamodel metamodel;
@@ -59,11 +59,15 @@ public abstract class AbstractRepository<T, ID> implements Entities<T, ID> {
     protected Select<T> select;
     protected Column idColumn;
 
-    protected AbstractRepository() {
+    protected BaseAccessImpl() {
     }
 
-    public AbstractRepository(Class<T> entityType) {
+    public BaseAccessImpl(Class<T> entityType) {
         this.entityType = entityType;
+    }
+
+    static <T, ID> Access<T, ID> access(Class<T> entityType) {
+        return new AccessImpl<>(entityType);
     }
 
     @Autowired
@@ -81,7 +85,7 @@ public abstract class AbstractRepository<T, ID> implements Entities<T, ID> {
         if (this.entityType != null) {
             return this.entityType;
         }
-        ResolvableType type = ResolvableType.forClass(getClass()).as(AbstractRepository.class);
+        ResolvableType type = ResolvableType.forClass(getClass()).as(BaseAccessImpl.class);
         Class<?> entityType = type.resolveGeneric(0);
         return TypeCastUtil.cast(entityType);
     }
@@ -101,14 +105,12 @@ public abstract class AbstractRepository<T, ID> implements Entities<T, ID> {
         update.delete(entities, entityType);
     }
 
-    @Override
     public T get(ID id) {
         Expression operate = Expressions.operate(idColumn, Operator.EQ, Expressions.of(id));
         ExpressionHolder<T, Boolean> predicate = ExpressionHolders.of(operate);
         return where(predicate).getSingle();
     }
 
-    @Override
     public List<T> getAll(Iterable<? extends ID> ids) {
         List<Expression> idsExpression = StreamSupport.stream(ids.spliterator(), false)
                 .map(Expressions::of).collect(Collectors.toList());
@@ -120,7 +122,6 @@ public abstract class AbstractRepository<T, ID> implements Entities<T, ID> {
         return where(predicate).getList();
     }
 
-    @Override
     public Map<ID, T> getMap(Iterable<? extends ID> ids) {
         List<T> entities = getAll(ids);
         return entities.stream()
@@ -387,5 +388,11 @@ public abstract class AbstractRepository<T, ID> implements Entities<T, ID> {
     public <A, B, C, D, E, F, G, H, I, J> Where0<T, Tuple10<A, B, C, D, E, F, G, H, I, J>>
     selectDistinct(Path<T, A> a, Path<T, B> b, Path<T, C> c, Path<T, D> d, Path<T, E> e, Path<T, F> f, Path<T, G> g, Path<T, H> h, Path<T, I> i, Path<T, J> j) {
         return select.selectDistinct(a, b, c, d, e, f, g, h, i, j);
+    }
+
+    static class AccessImpl<T, ID> extends BaseAccessImpl<T, ID> implements Access<T, ID> {
+        public AccessImpl(Class<T> entityType) {
+            super(entityType);
+        }
     }
 }

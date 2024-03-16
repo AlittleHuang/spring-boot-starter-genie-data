@@ -1,6 +1,6 @@
 package io.github.genie.data.jdbc;
 
-import io.github.genie.data.repository.BaseRepositoryConfiguration;
+import io.github.genie.data.access.BaseDbAccessConfiguration;
 import io.github.genie.sql.api.Query;
 import io.github.genie.sql.api.Update;
 import io.github.genie.sql.builder.AbstractQueryExecutor;
@@ -24,8 +24,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
-@Import(BaseRepositoryConfiguration.class)
-public class JdbcRepositoryConfiguration {
+@Import(BaseDbAccessConfiguration.class)
+public class JdbcAccessConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
