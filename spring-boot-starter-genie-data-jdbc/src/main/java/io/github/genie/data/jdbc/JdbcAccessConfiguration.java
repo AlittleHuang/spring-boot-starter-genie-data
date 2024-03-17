@@ -30,7 +30,7 @@ public class JdbcAccessConfiguration {
     @Bean
     @ConditionalOnMissingBean
     Metamodel genieMetamodel() {
-        return new JpaMetamodel();
+        return JpaMetamodel.of();
     }
 
     @Bean

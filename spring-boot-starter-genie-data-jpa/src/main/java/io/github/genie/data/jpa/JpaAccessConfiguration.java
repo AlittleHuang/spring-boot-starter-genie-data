@@ -27,7 +27,7 @@ public class JpaAccessConfiguration {
     @Bean
     @ConditionalOnMissingBean
     protected Metamodel genieMetamodel() {
-        return new JpaMetamodel();
+        return JpaMetamodel.of();
     }
 
     @Bean
