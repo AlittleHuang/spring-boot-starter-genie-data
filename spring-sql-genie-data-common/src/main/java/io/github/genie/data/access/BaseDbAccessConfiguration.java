@@ -52,7 +52,7 @@ public class BaseDbAccessConfiguration {
         Class<ID> idType = AccessTypeUtil.getIdType(descriptor);
         Class<?> expected = metamodel.getEntity(entityType).id().javaType();
         if (expected != idType) {
-            String msg = descriptor.getResolvableType() + " " + descriptor.getDependencyName()
+            String msg = descriptor.getResolvableType() + " " + descriptor
                          + " id type mismatch, expected: " + expected + ", actual: " + idType;
             throw new EntityIdTypeMismatchException(msg);
         }
