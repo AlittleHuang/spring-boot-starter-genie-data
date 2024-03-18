@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.genie-cloud</groupId>
     <artifactId>spring-boot-starter-genie-data</artifactId>
-    <version>1.0.0-jdk8-SNAPSHOT</version>
+    <version>1.1.0-jdk8-SNAPSHOT</version>
   </parent>
 
   <artifactId>spring-boot-starter-genie-data-jpa</artifactId>
@@ -33,7 +33,7 @@
     </dependency>
 
     <dependency>
-      <groupId>org.hibernate.orm</groupId>
+      <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
     </dependency>
 
