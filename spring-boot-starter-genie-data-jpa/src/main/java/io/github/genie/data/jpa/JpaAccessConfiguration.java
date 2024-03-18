@@ -1,11 +1,6 @@
 package io.github.genie.data.jpa;
 
 import io.github.genie.data.access.BaseDbAccessConfiguration;
-import io.github.genie.data.repository.AbstractGenieDataConfig;
-import io.github.genie.data.repository.DataAccess;
-import io.github.genie.data.repository.DataAccessor;
-import io.github.genie.data.repository.Persistable;
-import io.github.genie.data.repository.Repository;
 import io.github.genie.sql.api.Query;
 import io.github.genie.sql.api.Update;
 import io.github.genie.sql.builder.AbstractQueryExecutor;
@@ -16,16 +11,15 @@ import io.github.genie.sql.executor.jdbc.MySqlQuerySqlBuilder;
 import io.github.genie.sql.executor.jpa.JpaQueryExecutor;
 import io.github.genie.sql.executor.jpa.JpaUpdate;
 import io.github.genie.sql.meta.JpaMetamodel;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.orm.jpa.SharedEntityManagerCreator;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 @Configuration
 @Import(BaseDbAccessConfiguration.class)
