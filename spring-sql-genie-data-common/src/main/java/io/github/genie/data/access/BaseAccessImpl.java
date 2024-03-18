@@ -10,7 +10,6 @@ import io.github.genie.sql.api.Update;
 import io.github.genie.sql.api.Updater;
 import io.github.genie.sql.builder.ExpressionHolders;
 import io.github.genie.sql.builder.Expressions;
-import io.github.genie.sql.builder.meta.Attribute;
 import io.github.genie.sql.builder.meta.Metamodel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
@@ -29,7 +28,7 @@ class BaseAccessImpl<T, ID> extends AccessFacade<T> implements BaseAccess<T> {
     protected Class<T> entityType;
     protected Select<T> select;
     protected Column idColumn;
-    private Updater<T> updater;
+    protected Updater<T> updater;
 
     protected BaseAccessImpl() {
     }
@@ -49,8 +48,8 @@ class BaseAccessImpl<T, ID> extends AccessFacade<T> implements BaseAccess<T> {
         this.metamodel = metamodel;
         this.entityType = resolveEntityType();
         this.select = query.from(entityType);
-        Attribute idAttribute = metamodel.getEntity(entityType).id();
-        this.idColumn = Expressions.column(idAttribute.name());
+        this.updater = update.getUpdater(entityType);
+        this.idColumn = Expressions.column(metamodel.getEntity(entityType).id().name());
     }
 
     protected Class<T> resolveEntityType() {
@@ -95,12 +94,8 @@ class BaseAccessImpl<T, ID> extends AccessFacade<T> implements BaseAccess<T> {
 
     @Override
     protected Updater<T> updater() {
-        if (this.updater != null) {
-            return this.updater;
-        }
-        return this.updater = update.getUpdater(entityType);
+        return this.updater;
     }
-
 
     static class AccessImpl<T, ID> extends BaseAccessImpl<T, ID> implements Access<T, ID> {
         public AccessImpl(Class<T> entityType) {
