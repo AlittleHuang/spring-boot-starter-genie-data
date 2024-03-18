@@ -1,1 +1,1 @@
-io.github.genie.data.jdbc.GenieDataJdbcConfig
+io.github.genie.data.jdbc.JdbcAccessConfiguration

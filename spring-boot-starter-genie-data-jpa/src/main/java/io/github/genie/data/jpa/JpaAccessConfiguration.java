@@ -1,5 +1,6 @@
 package io.github.genie.data.jpa;
 
+import io.github.genie.data.access.BaseDbAccessConfiguration;
 import io.github.genie.data.repository.AbstractGenieDataConfig;
 import io.github.genie.data.repository.DataAccess;
 import io.github.genie.data.repository.DataAccessor;
@@ -15,24 +16,25 @@ import io.github.genie.sql.executor.jdbc.MySqlQuerySqlBuilder;
 import io.github.genie.sql.executor.jpa.JpaQueryExecutor;
 import io.github.genie.sql.executor.jpa.JpaUpdate;
 import io.github.genie.sql.meta.JpaMetamodel;
+
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-
-import java.io.Serializable;
+import org.springframework.context.annotation.Import;
+import org.springframework.orm.jpa.SharedEntityManagerCreator;
 
 @Configuration
-public class GenieDataJpaConfig extends AbstractGenieDataConfig {
+@Import(BaseDbAccessConfiguration.class)
+public class JpaAccessConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
     protected Metamodel genieMetamodel() {
-        return new JpaMetamodel();
+        return JpaMetamodel.of();
     }
 
     @Bean
@@ -43,17 +45,14 @@ public class GenieDataJpaConfig extends AbstractGenieDataConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    protected JpaQueryExecutor queryExecutor(EntityManager entityManager,
-                                             Metamodel metamodel,
-                                             QuerySqlBuilder querySqlBuilder) {
+    protected JpaQueryExecutor queryExecutor(EntityManager entityManager, Metamodel metamodel, QuerySqlBuilder querySqlBuilder) {
         return new JpaQueryExecutor(entityManager, metamodel, querySqlBuilder);
     }
 
     @Bean
     @ConditionalOnMissingBean
     protected Query genieQuery(AbstractQueryExecutor executor,
-                               @Autowired(required = false)
-                               QueryStructurePostProcessor structurePostProcessor) {
+                               @Autowired(required = false) QueryStructurePostProcessor structurePostProcessor) {
         return structurePostProcessor != null
                 ? executor.createQuery(structurePostProcessor)
                 : executor.createQuery();
@@ -65,23 +64,10 @@ public class GenieDataJpaConfig extends AbstractGenieDataConfig {
         return new JpaUpdate(entityManager, jpaQueryExecutor);
     }
 
-    @Override
     @Bean
-    protected DataAccessor genieDataBeans(Query query, Update update) {
-        return super.genieDataBeans(query, update);
+    @ConditionalOnMissingBean
+    protected EntityManager entityManager(EntityManagerFactory entityManagerFactory) {
+        return SharedEntityManagerCreator.createSharedEntityManager(entityManagerFactory);
     }
 
-    @Override
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    protected <T> DataAccess<T> genieDataAccess(DataAccessor accessor, DependencyDescriptor descriptor) {
-        return super.genieDataAccess(accessor, descriptor);
-    }
-
-    @Override
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    protected <T extends Persistable<ID>, ID extends Serializable> Repository<T, ID> genieDataRepository(DataAccessor genieDataBeans, DependencyDescriptor descriptor) {
-        return super.genieDataRepository(genieDataBeans, descriptor);
-    }
 }
