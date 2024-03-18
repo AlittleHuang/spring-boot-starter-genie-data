@@ -5,7 +5,7 @@
 
   <groupId>io.github.genie-cloud</groupId>
   <artifactId>spring-boot-starter-genie-data</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>1.1.0-jdk8-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -14,12 +14,12 @@
     <module>spring-boot-starter-genie-data-jpa</module>
   </modules>
   <properties>
-    <java.version>17</java.version>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-    <maven.compiler.release>17</maven.compiler.release>
-    <spring.boot.version>3.2.3</spring.boot.version>
-    <sql.genie.version>1.1.0</sql.genie.version>
+    <java.version>8</java.version>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
+    <maven.compiler.release>8</maven.compiler.release>
+    <spring.boot.version>2.7.18</spring.boot.version>
+    <sql.genie.version>1.1.0-jdk8</sql.genie.version>
     <lombok.version>1.18.30</lombok.version>
   </properties>
   <dependencyManagement>
